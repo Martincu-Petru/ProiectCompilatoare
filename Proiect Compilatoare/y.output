@@ -1,0 +1,1681 @@
+Grammar
+
+    0 $accept: PROGRAM $end
+
+    1 PROGRAM: START_DECLARATII DECLARATII SFARSIT_DECLARATII START_PROGRAM '{' INSTRUCTIUNI '}' STOP_PROGRAM START_DECLARATII_FUNCTIE DECLARATII_FUNCTIE SFARSIT_DECLARATII_FUNCTIE
+
+    2 DECLARATII_FUNCTIE: DECLARATIE_FUNCTIE
+    3                   | DECLARATII_FUNCTIE DECLARATIE_FUNCTIE
+
+    4 DECLARATIE_FUNCTIE: TIP_DATA IDENTIFICATOR '(' LISTA_PARAMETRI ')' '{' INSTRUCTIUNI RETURN TIP_DATA '.' '}'
+    5                   | VOID IDENTIFICATOR '(' LISTA_PARAMETRI ')' '{' INSTRUCTIUNI '}'
+
+    6 DECLARATII: DECLARATIE '.'
+    7           | DECLARATII DECLARATIE '.'
+
+    8 DECLARATII_STRUCTURA: DECLARATIE_STRUCTURA '.'
+    9                     | DECLARATII_STRUCTURA DECLARATIE_STRUCTURA '.'
+
+   10 DECLARATIE_STRUCTURA: TIP_DATA IDENTIFICATOR
+   11                     | TIP_DATA IDENTIFICATOR '[' NUMAR ']'
+   12                     | STRUCT IDENTIFICATOR '{' DECLARATII_STRUCTURA '}'
+
+   13 DECLARATIE: TIP_DATA IDENTIFICATOR
+   14           | TIP_DATA IDENTIFICATOR '(' LISTA_PARAMETRI ')'
+   15           | TIP_DATA IDENTIFICATOR '(' ')'
+   16           | TIP_DATA IDENTIFICATOR '[' NUMAR ']'
+   17           | STRUCT IDENTIFICATOR '{' DECLARATII_STRUCTURA '}'
+   18           | CONSTANTA TIP_DATA IDENTIFICATOR
+   19           | CONSTANTA TIP_DATA IDENTIFICATOR '[' NUMAR ']'
+   20           | CONSTANTA STRUCT IDENTIFICATOR '{' DECLARATII_STRUCTURA '}'
+
+   21 LISTA_PARAMETRI: PARAMETRU
+   22                | LISTA_PARAMETRI '~' PARAMETRU
+
+   23 PARAMETRU: TIP_DATA IDENTIFICATOR
+
+   24 INSTRUCTIUNI: INSTRUCTIUNE '.'
+   25             | INSTRUCTIUNI INSTRUCTIUNE '.'
+
+   26 INSTRUCTIUNE: IDENTIFICATOR ATRIBUIRE IDENTIFICATOR
+   27             | IDENTIFICATOR ATRIBUIRE NUMAR
+   28             | IDENTIFICATOR ATRIBUIRE '<' LISTA_VALORI '>'
+   29             | INSTRUCTIUNE_IF
+   30             | INSTRUCTIUNE_FOR
+   31             | INSTRUCTIUNE_WHILE
+   32             | EXPRESII_ARITMETICE
+
+   33 LISTA_VALORI: NUMAR
+   34             | LISTA_VALORI '~' NUMAR
+
+   35 INITIALIZARE: TIP_DATA IDENTIFICATOR ATRIBUIRE IDENTIFICATOR
+   36             | TIP_DATA IDENTIFICATOR ATRIBUIRE NUMAR
+   37             | IDENTIFICATOR ATRIBUIRE IDENTIFICATOR
+   38             | IDENTIFICATOR ATRIBUIRE NUMAR
+   39             | IDENTIFICATOR
+
+   40 OPRIRE: IDENTIFICATOR OPERATOR_RELATIONAL IDENTIFICATOR
+   41       | NUMAR OPERATOR_RELATIONAL IDENTIFICATOR
+   42       | IDENTIFICATOR OPERATOR_RELATIONAL NUMAR
+
+   43 OPERAND: NUMAR
+   44        | IDENTIFICATOR
+
+   45 EXPRESII_ARITMETICE: EXPRESIE_ARITMETICA
+   46                    | EXPRESIE_ARITMETICA OPERAND EXPRESII_ARITMETICE
+   47                    | '(' EXPRESIE_ARITMETICA ')'
+
+   48 EXPRESIE_ARITMETICA: OPERAND OPERATOR_ARITMETIC OPERAND
+   49                    | OPERAND
+
+   50 OPERATOR: OPERATOR_LOGIC
+   51         | OPERATOR_ARITMETIC
+   52         | OPERATOR_RELATIONAL
+
+   53 CONDITIE_COMPLEXA: BOOL
+   54                  | OPERAND OPERATOR OPERAND
+   55                  | OPERAND
+   56                  | '(' CONDITIE_COMPLEXA ')'
+
+   57 INSTRUCTIUNE_IF: IF '(' CONDITIE_COMPLEXA ')' THEN INSTRUCTIUNI ENDIF
+   58                | IF '(' CONDITIE_COMPLEXA ')' THEN INSTRUCTIUNI ELSE INSTRUCTIUNI ENDIF
+
+   59 INSTRUCTIUNE_FOR: FOR INITIALIZARE UNTIL OPRIRE DO_FOR INSTRUCTIUNI ENDFOR
+
+   60 INSTRUCTIUNE_WHILE: WHILE CONDITIE_COMPLEXA DO_WHILE INSTRUCTIUNI ENDWHILE
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'(' (40) 4 5 14 15 47 56 57 58
+')' (41) 4 5 14 15 47 56 57 58
+'.' (46) 4 6 7 8 9 24 25
+'<' (60) 28
+'>' (62) 28
+'[' (91) 11 16 19
+']' (93) 11 16 19
+'{' (123) 1 4 5 12 17 20
+'}' (125) 1 4 5 12 17 20
+'~' (126) 22 34
+error (256)
+FOR (258) 59
+UNTIL (259) 59
+WHILE (260) 60
+TIP_DATA (261) 4 10 11 13 14 15 16 18 19 23 35 36
+START_PROGRAM (262) 1
+CONSTANTA (263) 18 19 20
+STOP_PROGRAM (264) 1
+IDENTIFICATOR (265) 4 5 10 11 12 13 14 15 16 17 18 19 20 23 26 27 28
+    35 36 37 38 39 40 41 42 44
+ATRIBUIRE (266) 26 27 28 35 36 37 38
+NUMAR (267) 11 16 19 27 33 34 36 38 41 42 43
+BOOL (268) 53
+OPERATOR_LOGIC (269) 50
+OPERATOR_RELATIONAL (270) 40 41 42 52
+OPERATOR_ARITMETIC (271) 48 51
+IF (272) 57 58
+THEN (273) 57 58
+ELSE (274) 58
+ENDIF (275) 57 58
+DO_FOR (276) 59
+DO_WHILE (277) 60
+ENDFOR (278) 59
+ENDWHILE (279) 60
+VOID (280) 5
+RETURN (281) 4
+STRUCT (282) 12 17 20
+START_DECLARATII (283) 1
+SFARSIT_DECLARATII (284) 1
+START_DECLARATII_FUNCTIE (285) 1
+SFARSIT_DECLARATII_FUNCTIE (286) 1
+
+
+Nonterminals, with rules where they appear
+
+$accept (42)
+    on left: 0
+PROGRAM (43)
+    on left: 1, on right: 0
+DECLARATII_FUNCTIE (44)
+    on left: 2 3, on right: 1 3
+DECLARATIE_FUNCTIE (45)
+    on left: 4 5, on right: 2 3
+DECLARATII (46)
+    on left: 6 7, on right: 1 7
+DECLARATII_STRUCTURA (47)
+    on left: 8 9, on right: 9 12 17 20
+DECLARATIE_STRUCTURA (48)
+    on left: 10 11 12, on right: 8 9
+DECLARATIE (49)
+    on left: 13 14 15 16 17 18 19 20, on right: 6 7
+LISTA_PARAMETRI (50)
+    on left: 21 22, on right: 4 5 14 22
+PARAMETRU (51)
+    on left: 23, on right: 21 22
+INSTRUCTIUNI (52)
+    on left: 24 25, on right: 1 4 5 25 57 58 59 60
+INSTRUCTIUNE (53)
+    on left: 26 27 28 29 30 31 32, on right: 24 25
+LISTA_VALORI (54)
+    on left: 33 34, on right: 28 34
+INITIALIZARE (55)
+    on left: 35 36 37 38 39, on right: 59
+OPRIRE (56)
+    on left: 40 41 42, on right: 59
+OPERAND (57)
+    on left: 43 44, on right: 46 48 49 54 55
+EXPRESII_ARITMETICE (58)
+    on left: 45 46 47, on right: 32 46
+EXPRESIE_ARITMETICA (59)
+    on left: 48 49, on right: 45 46 47
+OPERATOR (60)
+    on left: 50 51 52, on right: 54
+CONDITIE_COMPLEXA (61)
+    on left: 53 54 55 56, on right: 56 57 58 60
+INSTRUCTIUNE_IF (62)
+    on left: 57 58, on right: 29
+INSTRUCTIUNE_FOR (63)
+    on left: 59, on right: 30
+INSTRUCTIUNE_WHILE (64)
+    on left: 60, on right: 31
+
+
+State 0
+
+    0 $accept: . PROGRAM $end
+
+    START_DECLARATII  shift, and go to state 1
+
+    PROGRAM  go to state 2
+
+
+State 1
+
+    1 PROGRAM: START_DECLARATII . DECLARATII SFARSIT_DECLARATII START_PROGRAM '{' INSTRUCTIUNI '}' STOP_PROGRAM START_DECLARATII_FUNCTIE DECLARATII_FUNCTIE SFARSIT_DECLARATII_FUNCTIE
+
+    TIP_DATA   shift, and go to state 3
+    CONSTANTA  shift, and go to state 4
+    STRUCT     shift, and go to state 5
+
+    DECLARATII  go to state 6
+    DECLARATIE  go to state 7
+
+
+State 2
+
+    0 $accept: PROGRAM . $end
+
+    $end  shift, and go to state 8
+
+
+State 3
+
+   13 DECLARATIE: TIP_DATA . IDENTIFICATOR
+   14           | TIP_DATA . IDENTIFICATOR '(' LISTA_PARAMETRI ')'
+   15           | TIP_DATA . IDENTIFICATOR '(' ')'
+   16           | TIP_DATA . IDENTIFICATOR '[' NUMAR ']'
+
+    IDENTIFICATOR  shift, and go to state 9
+
+
+State 4
+
+   18 DECLARATIE: CONSTANTA . TIP_DATA IDENTIFICATOR
+   19           | CONSTANTA . TIP_DATA IDENTIFICATOR '[' NUMAR ']'
+   20           | CONSTANTA . STRUCT IDENTIFICATOR '{' DECLARATII_STRUCTURA '}'
+
+    TIP_DATA  shift, and go to state 10
+    STRUCT    shift, and go to state 11
+
+
+State 5
+
+   17 DECLARATIE: STRUCT . IDENTIFICATOR '{' DECLARATII_STRUCTURA '}'
+
+    IDENTIFICATOR  shift, and go to state 12
+
+
+State 6
+
+    1 PROGRAM: START_DECLARATII DECLARATII . SFARSIT_DECLARATII START_PROGRAM '{' INSTRUCTIUNI '}' STOP_PROGRAM START_DECLARATII_FUNCTIE DECLARATII_FUNCTIE SFARSIT_DECLARATII_FUNCTIE
+    7 DECLARATII: DECLARATII . DECLARATIE '.'
+
+    TIP_DATA            shift, and go to state 3
+    CONSTANTA           shift, and go to state 4
+    STRUCT              shift, and go to state 5
+    SFARSIT_DECLARATII  shift, and go to state 13
+
+    DECLARATIE  go to state 14
+
+
+State 7
+
+    6 DECLARATII: DECLARATIE . '.'
+
+    '.'  shift, and go to state 15
+
+
+State 8
+
+    0 $accept: PROGRAM $end .
+
+    $default  accept
+
+
+State 9
+
+   13 DECLARATIE: TIP_DATA IDENTIFICATOR .
+   14           | TIP_DATA IDENTIFICATOR . '(' LISTA_PARAMETRI ')'
+   15           | TIP_DATA IDENTIFICATOR . '(' ')'
+   16           | TIP_DATA IDENTIFICATOR . '[' NUMAR ']'
+
+    '('  shift, and go to state 16
+    '['  shift, and go to state 17
+
+    $default  reduce using rule 13 (DECLARATIE)
+
+
+State 10
+
+   18 DECLARATIE: CONSTANTA TIP_DATA . IDENTIFICATOR
+   19           | CONSTANTA TIP_DATA . IDENTIFICATOR '[' NUMAR ']'
+
+    IDENTIFICATOR  shift, and go to state 18
+
+
+State 11
+
+   20 DECLARATIE: CONSTANTA STRUCT . IDENTIFICATOR '{' DECLARATII_STRUCTURA '}'
+
+    IDENTIFICATOR  shift, and go to state 19
+
+
+State 12
+
+   17 DECLARATIE: STRUCT IDENTIFICATOR . '{' DECLARATII_STRUCTURA '}'
+
+    '{'  shift, and go to state 20
+
+
+State 13
+
+    1 PROGRAM: START_DECLARATII DECLARATII SFARSIT_DECLARATII . START_PROGRAM '{' INSTRUCTIUNI '}' STOP_PROGRAM START_DECLARATII_FUNCTIE DECLARATII_FUNCTIE SFARSIT_DECLARATII_FUNCTIE
+
+    START_PROGRAM  shift, and go to state 21
+
+
+State 14
+
+    7 DECLARATII: DECLARATII DECLARATIE . '.'
+
+    '.'  shift, and go to state 22
+
+
+State 15
+
+    6 DECLARATII: DECLARATIE '.' .
+
+    $default  reduce using rule 6 (DECLARATII)
+
+
+State 16
+
+   14 DECLARATIE: TIP_DATA IDENTIFICATOR '(' . LISTA_PARAMETRI ')'
+   15           | TIP_DATA IDENTIFICATOR '(' . ')'
+
+    TIP_DATA  shift, and go to state 23
+    ')'       shift, and go to state 24
+
+    LISTA_PARAMETRI  go to state 25
+    PARAMETRU        go to state 26
+
+
+State 17
+
+   16 DECLARATIE: TIP_DATA IDENTIFICATOR '[' . NUMAR ']'
+
+    NUMAR  shift, and go to state 27
+
+
+State 18
+
+   18 DECLARATIE: CONSTANTA TIP_DATA IDENTIFICATOR .
+   19           | CONSTANTA TIP_DATA IDENTIFICATOR . '[' NUMAR ']'
+
+    '['  shift, and go to state 28
+
+    $default  reduce using rule 18 (DECLARATIE)
+
+
+State 19
+
+   20 DECLARATIE: CONSTANTA STRUCT IDENTIFICATOR . '{' DECLARATII_STRUCTURA '}'
+
+    '{'  shift, and go to state 29
+
+
+State 20
+
+   17 DECLARATIE: STRUCT IDENTIFICATOR '{' . DECLARATII_STRUCTURA '}'
+
+    TIP_DATA  shift, and go to state 30
+    STRUCT    shift, and go to state 31
+
+    DECLARATII_STRUCTURA  go to state 32
+    DECLARATIE_STRUCTURA  go to state 33
+
+
+State 21
+
+    1 PROGRAM: START_DECLARATII DECLARATII SFARSIT_DECLARATII START_PROGRAM . '{' INSTRUCTIUNI '}' STOP_PROGRAM START_DECLARATII_FUNCTIE DECLARATII_FUNCTIE SFARSIT_DECLARATII_FUNCTIE
+
+    '{'  shift, and go to state 34
+
+
+State 22
+
+    7 DECLARATII: DECLARATII DECLARATIE '.' .
+
+    $default  reduce using rule 7 (DECLARATII)
+
+
+State 23
+
+   23 PARAMETRU: TIP_DATA . IDENTIFICATOR
+
+    IDENTIFICATOR  shift, and go to state 35
+
+
+State 24
+
+   15 DECLARATIE: TIP_DATA IDENTIFICATOR '(' ')' .
+
+    $default  reduce using rule 15 (DECLARATIE)
+
+
+State 25
+
+   14 DECLARATIE: TIP_DATA IDENTIFICATOR '(' LISTA_PARAMETRI . ')'
+   22 LISTA_PARAMETRI: LISTA_PARAMETRI . '~' PARAMETRU
+
+    ')'  shift, and go to state 36
+    '~'  shift, and go to state 37
+
+
+State 26
+
+   21 LISTA_PARAMETRI: PARAMETRU .
+
+    $default  reduce using rule 21 (LISTA_PARAMETRI)
+
+
+State 27
+
+   16 DECLARATIE: TIP_DATA IDENTIFICATOR '[' NUMAR . ']'
+
+    ']'  shift, and go to state 38
+
+
+State 28
+
+   19 DECLARATIE: CONSTANTA TIP_DATA IDENTIFICATOR '[' . NUMAR ']'
+
+    NUMAR  shift, and go to state 39
+
+
+State 29
+
+   20 DECLARATIE: CONSTANTA STRUCT IDENTIFICATOR '{' . DECLARATII_STRUCTURA '}'
+
+    TIP_DATA  shift, and go to state 30
+    STRUCT    shift, and go to state 31
+
+    DECLARATII_STRUCTURA  go to state 40
+    DECLARATIE_STRUCTURA  go to state 33
+
+
+State 30
+
+   10 DECLARATIE_STRUCTURA: TIP_DATA . IDENTIFICATOR
+   11                     | TIP_DATA . IDENTIFICATOR '[' NUMAR ']'
+
+    IDENTIFICATOR  shift, and go to state 41
+
+
+State 31
+
+   12 DECLARATIE_STRUCTURA: STRUCT . IDENTIFICATOR '{' DECLARATII_STRUCTURA '}'
+
+    IDENTIFICATOR  shift, and go to state 42
+
+
+State 32
+
+    9 DECLARATII_STRUCTURA: DECLARATII_STRUCTURA . DECLARATIE_STRUCTURA '.'
+   17 DECLARATIE: STRUCT IDENTIFICATOR '{' DECLARATII_STRUCTURA . '}'
+
+    TIP_DATA  shift, and go to state 30
+    STRUCT    shift, and go to state 31
+    '}'       shift, and go to state 43
+
+    DECLARATIE_STRUCTURA  go to state 44
+
+
+State 33
+
+    8 DECLARATII_STRUCTURA: DECLARATIE_STRUCTURA . '.'
+
+    '.'  shift, and go to state 45
+
+
+State 34
+
+    1 PROGRAM: START_DECLARATII DECLARATII SFARSIT_DECLARATII START_PROGRAM '{' . INSTRUCTIUNI '}' STOP_PROGRAM START_DECLARATII_FUNCTIE DECLARATII_FUNCTIE SFARSIT_DECLARATII_FUNCTIE
+
+    FOR            shift, and go to state 46
+    WHILE          shift, and go to state 47
+    IDENTIFICATOR  shift, and go to state 48
+    NUMAR          shift, and go to state 49
+    IF             shift, and go to state 50
+    '('            shift, and go to state 51
+
+    INSTRUCTIUNI         go to state 52
+    INSTRUCTIUNE         go to state 53
+    OPERAND              go to state 54
+    EXPRESII_ARITMETICE  go to state 55
+    EXPRESIE_ARITMETICA  go to state 56
+    INSTRUCTIUNE_IF      go to state 57
+    INSTRUCTIUNE_FOR     go to state 58
+    INSTRUCTIUNE_WHILE   go to state 59
+
+
+State 35
+
+   23 PARAMETRU: TIP_DATA IDENTIFICATOR .
+
+    $default  reduce using rule 23 (PARAMETRU)
+
+
+State 36
+
+   14 DECLARATIE: TIP_DATA IDENTIFICATOR '(' LISTA_PARAMETRI ')' .
+
+    $default  reduce using rule 14 (DECLARATIE)
+
+
+State 37
+
+   22 LISTA_PARAMETRI: LISTA_PARAMETRI '~' . PARAMETRU
+
+    TIP_DATA  shift, and go to state 23
+
+    PARAMETRU  go to state 60
+
+
+State 38
+
+   16 DECLARATIE: TIP_DATA IDENTIFICATOR '[' NUMAR ']' .
+
+    $default  reduce using rule 16 (DECLARATIE)
+
+
+State 39
+
+   19 DECLARATIE: CONSTANTA TIP_DATA IDENTIFICATOR '[' NUMAR . ']'
+
+    ']'  shift, and go to state 61
+
+
+State 40
+
+    9 DECLARATII_STRUCTURA: DECLARATII_STRUCTURA . DECLARATIE_STRUCTURA '.'
+   20 DECLARATIE: CONSTANTA STRUCT IDENTIFICATOR '{' DECLARATII_STRUCTURA . '}'
+
+    TIP_DATA  shift, and go to state 30
+    STRUCT    shift, and go to state 31
+    '}'       shift, and go to state 62
+
+    DECLARATIE_STRUCTURA  go to state 44
+
+
+State 41
+
+   10 DECLARATIE_STRUCTURA: TIP_DATA IDENTIFICATOR .
+   11                     | TIP_DATA IDENTIFICATOR . '[' NUMAR ']'
+
+    '['  shift, and go to state 63
+
+    $default  reduce using rule 10 (DECLARATIE_STRUCTURA)
+
+
+State 42
+
+   12 DECLARATIE_STRUCTURA: STRUCT IDENTIFICATOR . '{' DECLARATII_STRUCTURA '}'
+
+    '{'  shift, and go to state 64
+
+
+State 43
+
+   17 DECLARATIE: STRUCT IDENTIFICATOR '{' DECLARATII_STRUCTURA '}' .
+
+    $default  reduce using rule 17 (DECLARATIE)
+
+
+State 44
+
+    9 DECLARATII_STRUCTURA: DECLARATII_STRUCTURA DECLARATIE_STRUCTURA . '.'
+
+    '.'  shift, and go to state 65
+
+
+State 45
+
+    8 DECLARATII_STRUCTURA: DECLARATIE_STRUCTURA '.' .
+
+    $default  reduce using rule 8 (DECLARATII_STRUCTURA)
+
+
+State 46
+
+   59 INSTRUCTIUNE_FOR: FOR . INITIALIZARE UNTIL OPRIRE DO_FOR INSTRUCTIUNI ENDFOR
+
+    TIP_DATA       shift, and go to state 66
+    IDENTIFICATOR  shift, and go to state 67
+
+    INITIALIZARE  go to state 68
+
+
+State 47
+
+   60 INSTRUCTIUNE_WHILE: WHILE . CONDITIE_COMPLEXA DO_WHILE INSTRUCTIUNI ENDWHILE
+
+    IDENTIFICATOR  shift, and go to state 69
+    NUMAR          shift, and go to state 49
+    BOOL           shift, and go to state 70
+    '('            shift, and go to state 71
+
+    OPERAND            go to state 72
+    CONDITIE_COMPLEXA  go to state 73
+
+
+State 48
+
+   26 INSTRUCTIUNE: IDENTIFICATOR . ATRIBUIRE IDENTIFICATOR
+   27             | IDENTIFICATOR . ATRIBUIRE NUMAR
+   28             | IDENTIFICATOR . ATRIBUIRE '<' LISTA_VALORI '>'
+   44 OPERAND: IDENTIFICATOR .
+
+    ATRIBUIRE  shift, and go to state 74
+
+    $default  reduce using rule 44 (OPERAND)
+
+
+State 49
+
+   43 OPERAND: NUMAR .
+
+    $default  reduce using rule 43 (OPERAND)
+
+
+State 50
+
+   57 INSTRUCTIUNE_IF: IF . '(' CONDITIE_COMPLEXA ')' THEN INSTRUCTIUNI ENDIF
+   58                | IF . '(' CONDITIE_COMPLEXA ')' THEN INSTRUCTIUNI ELSE INSTRUCTIUNI ENDIF
+
+    '('  shift, and go to state 75
+
+
+State 51
+
+   47 EXPRESII_ARITMETICE: '(' . EXPRESIE_ARITMETICA ')'
+
+    IDENTIFICATOR  shift, and go to state 69
+    NUMAR          shift, and go to state 49
+
+    OPERAND              go to state 54
+    EXPRESIE_ARITMETICA  go to state 76
+
+
+State 52
+
+    1 PROGRAM: START_DECLARATII DECLARATII SFARSIT_DECLARATII START_PROGRAM '{' INSTRUCTIUNI . '}' STOP_PROGRAM START_DECLARATII_FUNCTIE DECLARATII_FUNCTIE SFARSIT_DECLARATII_FUNCTIE
+   25 INSTRUCTIUNI: INSTRUCTIUNI . INSTRUCTIUNE '.'
+
+    FOR            shift, and go to state 46
+    WHILE          shift, and go to state 47
+    IDENTIFICATOR  shift, and go to state 48
+    NUMAR          shift, and go to state 49
+    IF             shift, and go to state 50
+    '}'            shift, and go to state 77
+    '('            shift, and go to state 51
+
+    INSTRUCTIUNE         go to state 78
+    OPERAND              go to state 54
+    EXPRESII_ARITMETICE  go to state 55
+    EXPRESIE_ARITMETICA  go to state 56
+    INSTRUCTIUNE_IF      go to state 57
+    INSTRUCTIUNE_FOR     go to state 58
+    INSTRUCTIUNE_WHILE   go to state 59
+
+
+State 53
+
+   24 INSTRUCTIUNI: INSTRUCTIUNE . '.'
+
+    '.'  shift, and go to state 79
+
+
+State 54
+
+   48 EXPRESIE_ARITMETICA: OPERAND . OPERATOR_ARITMETIC OPERAND
+   49                    | OPERAND .
+
+    OPERATOR_ARITMETIC  shift, and go to state 80
+
+    $default  reduce using rule 49 (EXPRESIE_ARITMETICA)
+
+
+State 55
+
+   32 INSTRUCTIUNE: EXPRESII_ARITMETICE .
+
+    $default  reduce using rule 32 (INSTRUCTIUNE)
+
+
+State 56
+
+   45 EXPRESII_ARITMETICE: EXPRESIE_ARITMETICA .
+   46                    | EXPRESIE_ARITMETICA . OPERAND EXPRESII_ARITMETICE
+
+    IDENTIFICATOR  shift, and go to state 69
+    NUMAR          shift, and go to state 49
+
+    $default  reduce using rule 45 (EXPRESII_ARITMETICE)
+
+    OPERAND  go to state 81
+
+
+State 57
+
+   29 INSTRUCTIUNE: INSTRUCTIUNE_IF .
+
+    $default  reduce using rule 29 (INSTRUCTIUNE)
+
+
+State 58
+
+   30 INSTRUCTIUNE: INSTRUCTIUNE_FOR .
+
+    $default  reduce using rule 30 (INSTRUCTIUNE)
+
+
+State 59
+
+   31 INSTRUCTIUNE: INSTRUCTIUNE_WHILE .
+
+    $default  reduce using rule 31 (INSTRUCTIUNE)
+
+
+State 60
+
+   22 LISTA_PARAMETRI: LISTA_PARAMETRI '~' PARAMETRU .
+
+    $default  reduce using rule 22 (LISTA_PARAMETRI)
+
+
+State 61
+
+   19 DECLARATIE: CONSTANTA TIP_DATA IDENTIFICATOR '[' NUMAR ']' .
+
+    $default  reduce using rule 19 (DECLARATIE)
+
+
+State 62
+
+   20 DECLARATIE: CONSTANTA STRUCT IDENTIFICATOR '{' DECLARATII_STRUCTURA '}' .
+
+    $default  reduce using rule 20 (DECLARATIE)
+
+
+State 63
+
+   11 DECLARATIE_STRUCTURA: TIP_DATA IDENTIFICATOR '[' . NUMAR ']'
+
+    NUMAR  shift, and go to state 82
+
+
+State 64
+
+   12 DECLARATIE_STRUCTURA: STRUCT IDENTIFICATOR '{' . DECLARATII_STRUCTURA '}'
+
+    TIP_DATA  shift, and go to state 30
+    STRUCT    shift, and go to state 31
+
+    DECLARATII_STRUCTURA  go to state 83
+    DECLARATIE_STRUCTURA  go to state 33
+
+
+State 65
+
+    9 DECLARATII_STRUCTURA: DECLARATII_STRUCTURA DECLARATIE_STRUCTURA '.' .
+
+    $default  reduce using rule 9 (DECLARATII_STRUCTURA)
+
+
+State 66
+
+   35 INITIALIZARE: TIP_DATA . IDENTIFICATOR ATRIBUIRE IDENTIFICATOR
+   36             | TIP_DATA . IDENTIFICATOR ATRIBUIRE NUMAR
+
+    IDENTIFICATOR  shift, and go to state 84
+
+
+State 67
+
+   37 INITIALIZARE: IDENTIFICATOR . ATRIBUIRE IDENTIFICATOR
+   38             | IDENTIFICATOR . ATRIBUIRE NUMAR
+   39             | IDENTIFICATOR .
+
+    ATRIBUIRE  shift, and go to state 85
+
+    $default  reduce using rule 39 (INITIALIZARE)
+
+
+State 68
+
+   59 INSTRUCTIUNE_FOR: FOR INITIALIZARE . UNTIL OPRIRE DO_FOR INSTRUCTIUNI ENDFOR
+
+    UNTIL  shift, and go to state 86
+
+
+State 69
+
+   44 OPERAND: IDENTIFICATOR .
+
+    $default  reduce using rule 44 (OPERAND)
+
+
+State 70
+
+   53 CONDITIE_COMPLEXA: BOOL .
+
+    $default  reduce using rule 53 (CONDITIE_COMPLEXA)
+
+
+State 71
+
+   56 CONDITIE_COMPLEXA: '(' . CONDITIE_COMPLEXA ')'
+
+    IDENTIFICATOR  shift, and go to state 69
+    NUMAR          shift, and go to state 49
+    BOOL           shift, and go to state 70
+    '('            shift, and go to state 71
+
+    OPERAND            go to state 72
+    CONDITIE_COMPLEXA  go to state 87
+
+
+State 72
+
+   54 CONDITIE_COMPLEXA: OPERAND . OPERATOR OPERAND
+   55                  | OPERAND .
+
+    OPERATOR_LOGIC       shift, and go to state 88
+    OPERATOR_RELATIONAL  shift, and go to state 89
+    OPERATOR_ARITMETIC   shift, and go to state 90
+
+    $default  reduce using rule 55 (CONDITIE_COMPLEXA)
+
+    OPERATOR  go to state 91
+
+
+State 73
+
+   60 INSTRUCTIUNE_WHILE: WHILE CONDITIE_COMPLEXA . DO_WHILE INSTRUCTIUNI ENDWHILE
+
+    DO_WHILE  shift, and go to state 92
+
+
+State 74
+
+   26 INSTRUCTIUNE: IDENTIFICATOR ATRIBUIRE . IDENTIFICATOR
+   27             | IDENTIFICATOR ATRIBUIRE . NUMAR
+   28             | IDENTIFICATOR ATRIBUIRE . '<' LISTA_VALORI '>'
+
+    IDENTIFICATOR  shift, and go to state 93
+    NUMAR          shift, and go to state 94
+    '<'            shift, and go to state 95
+
+
+State 75
+
+   57 INSTRUCTIUNE_IF: IF '(' . CONDITIE_COMPLEXA ')' THEN INSTRUCTIUNI ENDIF
+   58                | IF '(' . CONDITIE_COMPLEXA ')' THEN INSTRUCTIUNI ELSE INSTRUCTIUNI ENDIF
+
+    IDENTIFICATOR  shift, and go to state 69
+    NUMAR          shift, and go to state 49
+    BOOL           shift, and go to state 70
+    '('            shift, and go to state 71
+
+    OPERAND            go to state 72
+    CONDITIE_COMPLEXA  go to state 96
+
+
+State 76
+
+   47 EXPRESII_ARITMETICE: '(' EXPRESIE_ARITMETICA . ')'
+
+    ')'  shift, and go to state 97
+
+
+State 77
+
+    1 PROGRAM: START_DECLARATII DECLARATII SFARSIT_DECLARATII START_PROGRAM '{' INSTRUCTIUNI '}' . STOP_PROGRAM START_DECLARATII_FUNCTIE DECLARATII_FUNCTIE SFARSIT_DECLARATII_FUNCTIE
+
+    STOP_PROGRAM  shift, and go to state 98
+
+
+State 78
+
+   25 INSTRUCTIUNI: INSTRUCTIUNI INSTRUCTIUNE . '.'
+
+    '.'  shift, and go to state 99
+
+
+State 79
+
+   24 INSTRUCTIUNI: INSTRUCTIUNE '.' .
+
+    $default  reduce using rule 24 (INSTRUCTIUNI)
+
+
+State 80
+
+   48 EXPRESIE_ARITMETICA: OPERAND OPERATOR_ARITMETIC . OPERAND
+
+    IDENTIFICATOR  shift, and go to state 69
+    NUMAR          shift, and go to state 49
+
+    OPERAND  go to state 100
+
+
+State 81
+
+   46 EXPRESII_ARITMETICE: EXPRESIE_ARITMETICA OPERAND . EXPRESII_ARITMETICE
+
+    IDENTIFICATOR  shift, and go to state 69
+    NUMAR          shift, and go to state 49
+    '('            shift, and go to state 51
+
+    OPERAND              go to state 54
+    EXPRESII_ARITMETICE  go to state 101
+    EXPRESIE_ARITMETICA  go to state 56
+
+
+State 82
+
+   11 DECLARATIE_STRUCTURA: TIP_DATA IDENTIFICATOR '[' NUMAR . ']'
+
+    ']'  shift, and go to state 102
+
+
+State 83
+
+    9 DECLARATII_STRUCTURA: DECLARATII_STRUCTURA . DECLARATIE_STRUCTURA '.'
+   12 DECLARATIE_STRUCTURA: STRUCT IDENTIFICATOR '{' DECLARATII_STRUCTURA . '}'
+
+    TIP_DATA  shift, and go to state 30
+    STRUCT    shift, and go to state 31
+    '}'       shift, and go to state 103
+
+    DECLARATIE_STRUCTURA  go to state 44
+
+
+State 84
+
+   35 INITIALIZARE: TIP_DATA IDENTIFICATOR . ATRIBUIRE IDENTIFICATOR
+   36             | TIP_DATA IDENTIFICATOR . ATRIBUIRE NUMAR
+
+    ATRIBUIRE  shift, and go to state 104
+
+
+State 85
+
+   37 INITIALIZARE: IDENTIFICATOR ATRIBUIRE . IDENTIFICATOR
+   38             | IDENTIFICATOR ATRIBUIRE . NUMAR
+
+    IDENTIFICATOR  shift, and go to state 105
+    NUMAR          shift, and go to state 106
+
+
+State 86
+
+   59 INSTRUCTIUNE_FOR: FOR INITIALIZARE UNTIL . OPRIRE DO_FOR INSTRUCTIUNI ENDFOR
+
+    IDENTIFICATOR  shift, and go to state 107
+    NUMAR          shift, and go to state 108
+
+    OPRIRE  go to state 109
+
+
+State 87
+
+   56 CONDITIE_COMPLEXA: '(' CONDITIE_COMPLEXA . ')'
+
+    ')'  shift, and go to state 110
+
+
+State 88
+
+   50 OPERATOR: OPERATOR_LOGIC .
+
+    $default  reduce using rule 50 (OPERATOR)
+
+
+State 89
+
+   52 OPERATOR: OPERATOR_RELATIONAL .
+
+    $default  reduce using rule 52 (OPERATOR)
+
+
+State 90
+
+   51 OPERATOR: OPERATOR_ARITMETIC .
+
+    $default  reduce using rule 51 (OPERATOR)
+
+
+State 91
+
+   54 CONDITIE_COMPLEXA: OPERAND OPERATOR . OPERAND
+
+    IDENTIFICATOR  shift, and go to state 69
+    NUMAR          shift, and go to state 49
+
+    OPERAND  go to state 111
+
+
+State 92
+
+   60 INSTRUCTIUNE_WHILE: WHILE CONDITIE_COMPLEXA DO_WHILE . INSTRUCTIUNI ENDWHILE
+
+    FOR            shift, and go to state 46
+    WHILE          shift, and go to state 47
+    IDENTIFICATOR  shift, and go to state 48
+    NUMAR          shift, and go to state 49
+    IF             shift, and go to state 50
+    '('            shift, and go to state 51
+
+    INSTRUCTIUNI         go to state 112
+    INSTRUCTIUNE         go to state 53
+    OPERAND              go to state 54
+    EXPRESII_ARITMETICE  go to state 55
+    EXPRESIE_ARITMETICA  go to state 56
+    INSTRUCTIUNE_IF      go to state 57
+    INSTRUCTIUNE_FOR     go to state 58
+    INSTRUCTIUNE_WHILE   go to state 59
+
+
+State 93
+
+   26 INSTRUCTIUNE: IDENTIFICATOR ATRIBUIRE IDENTIFICATOR .
+
+    $default  reduce using rule 26 (INSTRUCTIUNE)
+
+
+State 94
+
+   27 INSTRUCTIUNE: IDENTIFICATOR ATRIBUIRE NUMAR .
+
+    $default  reduce using rule 27 (INSTRUCTIUNE)
+
+
+State 95
+
+   28 INSTRUCTIUNE: IDENTIFICATOR ATRIBUIRE '<' . LISTA_VALORI '>'
+
+    NUMAR  shift, and go to state 113
+
+    LISTA_VALORI  go to state 114
+
+
+State 96
+
+   57 INSTRUCTIUNE_IF: IF '(' CONDITIE_COMPLEXA . ')' THEN INSTRUCTIUNI ENDIF
+   58                | IF '(' CONDITIE_COMPLEXA . ')' THEN INSTRUCTIUNI ELSE INSTRUCTIUNI ENDIF
+
+    ')'  shift, and go to state 115
+
+
+State 97
+
+   47 EXPRESII_ARITMETICE: '(' EXPRESIE_ARITMETICA ')' .
+
+    $default  reduce using rule 47 (EXPRESII_ARITMETICE)
+
+
+State 98
+
+    1 PROGRAM: START_DECLARATII DECLARATII SFARSIT_DECLARATII START_PROGRAM '{' INSTRUCTIUNI '}' STOP_PROGRAM . START_DECLARATII_FUNCTIE DECLARATII_FUNCTIE SFARSIT_DECLARATII_FUNCTIE
+
+    START_DECLARATII_FUNCTIE  shift, and go to state 116
+
+
+State 99
+
+   25 INSTRUCTIUNI: INSTRUCTIUNI INSTRUCTIUNE '.' .
+
+    $default  reduce using rule 25 (INSTRUCTIUNI)
+
+
+State 100
+
+   48 EXPRESIE_ARITMETICA: OPERAND OPERATOR_ARITMETIC OPERAND .
+
+    $default  reduce using rule 48 (EXPRESIE_ARITMETICA)
+
+
+State 101
+
+   46 EXPRESII_ARITMETICE: EXPRESIE_ARITMETICA OPERAND EXPRESII_ARITMETICE .
+
+    $default  reduce using rule 46 (EXPRESII_ARITMETICE)
+
+
+State 102
+
+   11 DECLARATIE_STRUCTURA: TIP_DATA IDENTIFICATOR '[' NUMAR ']' .
+
+    $default  reduce using rule 11 (DECLARATIE_STRUCTURA)
+
+
+State 103
+
+   12 DECLARATIE_STRUCTURA: STRUCT IDENTIFICATOR '{' DECLARATII_STRUCTURA '}' .
+
+    $default  reduce using rule 12 (DECLARATIE_STRUCTURA)
+
+
+State 104
+
+   35 INITIALIZARE: TIP_DATA IDENTIFICATOR ATRIBUIRE . IDENTIFICATOR
+   36             | TIP_DATA IDENTIFICATOR ATRIBUIRE . NUMAR
+
+    IDENTIFICATOR  shift, and go to state 117
+    NUMAR          shift, and go to state 118
+
+
+State 105
+
+   37 INITIALIZARE: IDENTIFICATOR ATRIBUIRE IDENTIFICATOR .
+
+    $default  reduce using rule 37 (INITIALIZARE)
+
+
+State 106
+
+   38 INITIALIZARE: IDENTIFICATOR ATRIBUIRE NUMAR .
+
+    $default  reduce using rule 38 (INITIALIZARE)
+
+
+State 107
+
+   40 OPRIRE: IDENTIFICATOR . OPERATOR_RELATIONAL IDENTIFICATOR
+   42       | IDENTIFICATOR . OPERATOR_RELATIONAL NUMAR
+
+    OPERATOR_RELATIONAL  shift, and go to state 119
+
+
+State 108
+
+   41 OPRIRE: NUMAR . OPERATOR_RELATIONAL IDENTIFICATOR
+
+    OPERATOR_RELATIONAL  shift, and go to state 120
+
+
+State 109
+
+   59 INSTRUCTIUNE_FOR: FOR INITIALIZARE UNTIL OPRIRE . DO_FOR INSTRUCTIUNI ENDFOR
+
+    DO_FOR  shift, and go to state 121
+
+
+State 110
+
+   56 CONDITIE_COMPLEXA: '(' CONDITIE_COMPLEXA ')' .
+
+    $default  reduce using rule 56 (CONDITIE_COMPLEXA)
+
+
+State 111
+
+   54 CONDITIE_COMPLEXA: OPERAND OPERATOR OPERAND .
+
+    $default  reduce using rule 54 (CONDITIE_COMPLEXA)
+
+
+State 112
+
+   25 INSTRUCTIUNI: INSTRUCTIUNI . INSTRUCTIUNE '.'
+   60 INSTRUCTIUNE_WHILE: WHILE CONDITIE_COMPLEXA DO_WHILE INSTRUCTIUNI . ENDWHILE
+
+    FOR            shift, and go to state 46
+    WHILE          shift, and go to state 47
+    IDENTIFICATOR  shift, and go to state 48
+    NUMAR          shift, and go to state 49
+    IF             shift, and go to state 50
+    ENDWHILE       shift, and go to state 122
+    '('            shift, and go to state 51
+
+    INSTRUCTIUNE         go to state 78
+    OPERAND              go to state 54
+    EXPRESII_ARITMETICE  go to state 55
+    EXPRESIE_ARITMETICA  go to state 56
+    INSTRUCTIUNE_IF      go to state 57
+    INSTRUCTIUNE_FOR     go to state 58
+    INSTRUCTIUNE_WHILE   go to state 59
+
+
+State 113
+
+   33 LISTA_VALORI: NUMAR .
+
+    $default  reduce using rule 33 (LISTA_VALORI)
+
+
+State 114
+
+   28 INSTRUCTIUNE: IDENTIFICATOR ATRIBUIRE '<' LISTA_VALORI . '>'
+   34 LISTA_VALORI: LISTA_VALORI . '~' NUMAR
+
+    '~'  shift, and go to state 123
+    '>'  shift, and go to state 124
+
+
+State 115
+
+   57 INSTRUCTIUNE_IF: IF '(' CONDITIE_COMPLEXA ')' . THEN INSTRUCTIUNI ENDIF
+   58                | IF '(' CONDITIE_COMPLEXA ')' . THEN INSTRUCTIUNI ELSE INSTRUCTIUNI ENDIF
+
+    THEN  shift, and go to state 125
+
+
+State 116
+
+    1 PROGRAM: START_DECLARATII DECLARATII SFARSIT_DECLARATII START_PROGRAM '{' INSTRUCTIUNI '}' STOP_PROGRAM START_DECLARATII_FUNCTIE . DECLARATII_FUNCTIE SFARSIT_DECLARATII_FUNCTIE
+
+    TIP_DATA  shift, and go to state 126
+    VOID      shift, and go to state 127
+
+    DECLARATII_FUNCTIE  go to state 128
+    DECLARATIE_FUNCTIE  go to state 129
+
+
+State 117
+
+   35 INITIALIZARE: TIP_DATA IDENTIFICATOR ATRIBUIRE IDENTIFICATOR .
+
+    $default  reduce using rule 35 (INITIALIZARE)
+
+
+State 118
+
+   36 INITIALIZARE: TIP_DATA IDENTIFICATOR ATRIBUIRE NUMAR .
+
+    $default  reduce using rule 36 (INITIALIZARE)
+
+
+State 119
+
+   40 OPRIRE: IDENTIFICATOR OPERATOR_RELATIONAL . IDENTIFICATOR
+   42       | IDENTIFICATOR OPERATOR_RELATIONAL . NUMAR
+
+    IDENTIFICATOR  shift, and go to state 130
+    NUMAR          shift, and go to state 131
+
+
+State 120
+
+   41 OPRIRE: NUMAR OPERATOR_RELATIONAL . IDENTIFICATOR
+
+    IDENTIFICATOR  shift, and go to state 132
+
+
+State 121
+
+   59 INSTRUCTIUNE_FOR: FOR INITIALIZARE UNTIL OPRIRE DO_FOR . INSTRUCTIUNI ENDFOR
+
+    FOR            shift, and go to state 46
+    WHILE          shift, and go to state 47
+    IDENTIFICATOR  shift, and go to state 48
+    NUMAR          shift, and go to state 49
+    IF             shift, and go to state 50
+    '('            shift, and go to state 51
+
+    INSTRUCTIUNI         go to state 133
+    INSTRUCTIUNE         go to state 53
+    OPERAND              go to state 54
+    EXPRESII_ARITMETICE  go to state 55
+    EXPRESIE_ARITMETICA  go to state 56
+    INSTRUCTIUNE_IF      go to state 57
+    INSTRUCTIUNE_FOR     go to state 58
+    INSTRUCTIUNE_WHILE   go to state 59
+
+
+State 122
+
+   60 INSTRUCTIUNE_WHILE: WHILE CONDITIE_COMPLEXA DO_WHILE INSTRUCTIUNI ENDWHILE .
+
+    $default  reduce using rule 60 (INSTRUCTIUNE_WHILE)
+
+
+State 123
+
+   34 LISTA_VALORI: LISTA_VALORI '~' . NUMAR
+
+    NUMAR  shift, and go to state 134
+
+
+State 124
+
+   28 INSTRUCTIUNE: IDENTIFICATOR ATRIBUIRE '<' LISTA_VALORI '>' .
+
+    $default  reduce using rule 28 (INSTRUCTIUNE)
+
+
+State 125
+
+   57 INSTRUCTIUNE_IF: IF '(' CONDITIE_COMPLEXA ')' THEN . INSTRUCTIUNI ENDIF
+   58                | IF '(' CONDITIE_COMPLEXA ')' THEN . INSTRUCTIUNI ELSE INSTRUCTIUNI ENDIF
+
+    FOR            shift, and go to state 46
+    WHILE          shift, and go to state 47
+    IDENTIFICATOR  shift, and go to state 48
+    NUMAR          shift, and go to state 49
+    IF             shift, and go to state 50
+    '('            shift, and go to state 51
+
+    INSTRUCTIUNI         go to state 135
+    INSTRUCTIUNE         go to state 53
+    OPERAND              go to state 54
+    EXPRESII_ARITMETICE  go to state 55
+    EXPRESIE_ARITMETICA  go to state 56
+    INSTRUCTIUNE_IF      go to state 57
+    INSTRUCTIUNE_FOR     go to state 58
+    INSTRUCTIUNE_WHILE   go to state 59
+
+
+State 126
+
+    4 DECLARATIE_FUNCTIE: TIP_DATA . IDENTIFICATOR '(' LISTA_PARAMETRI ')' '{' INSTRUCTIUNI RETURN TIP_DATA '.' '}'
+
+    IDENTIFICATOR  shift, and go to state 136
+
+
+State 127
+
+    5 DECLARATIE_FUNCTIE: VOID . IDENTIFICATOR '(' LISTA_PARAMETRI ')' '{' INSTRUCTIUNI '}'
+
+    IDENTIFICATOR  shift, and go to state 137
+
+
+State 128
+
+    1 PROGRAM: START_DECLARATII DECLARATII SFARSIT_DECLARATII START_PROGRAM '{' INSTRUCTIUNI '}' STOP_PROGRAM START_DECLARATII_FUNCTIE DECLARATII_FUNCTIE . SFARSIT_DECLARATII_FUNCTIE
+    3 DECLARATII_FUNCTIE: DECLARATII_FUNCTIE . DECLARATIE_FUNCTIE
+
+    TIP_DATA                    shift, and go to state 126
+    VOID                        shift, and go to state 127
+    SFARSIT_DECLARATII_FUNCTIE  shift, and go to state 138
+
+    DECLARATIE_FUNCTIE  go to state 139
+
+
+State 129
+
+    2 DECLARATII_FUNCTIE: DECLARATIE_FUNCTIE .
+
+    $default  reduce using rule 2 (DECLARATII_FUNCTIE)
+
+
+State 130
+
+   40 OPRIRE: IDENTIFICATOR OPERATOR_RELATIONAL IDENTIFICATOR .
+
+    $default  reduce using rule 40 (OPRIRE)
+
+
+State 131
+
+   42 OPRIRE: IDENTIFICATOR OPERATOR_RELATIONAL NUMAR .
+
+    $default  reduce using rule 42 (OPRIRE)
+
+
+State 132
+
+   41 OPRIRE: NUMAR OPERATOR_RELATIONAL IDENTIFICATOR .
+
+    $default  reduce using rule 41 (OPRIRE)
+
+
+State 133
+
+   25 INSTRUCTIUNI: INSTRUCTIUNI . INSTRUCTIUNE '.'
+   59 INSTRUCTIUNE_FOR: FOR INITIALIZARE UNTIL OPRIRE DO_FOR INSTRUCTIUNI . ENDFOR
+
+    FOR            shift, and go to state 46
+    WHILE          shift, and go to state 47
+    IDENTIFICATOR  shift, and go to state 48
+    NUMAR          shift, and go to state 49
+    IF             shift, and go to state 50
+    ENDFOR         shift, and go to state 140
+    '('            shift, and go to state 51
+
+    INSTRUCTIUNE         go to state 78
+    OPERAND              go to state 54
+    EXPRESII_ARITMETICE  go to state 55
+    EXPRESIE_ARITMETICA  go to state 56
+    INSTRUCTIUNE_IF      go to state 57
+    INSTRUCTIUNE_FOR     go to state 58
+    INSTRUCTIUNE_WHILE   go to state 59
+
+
+State 134
+
+   34 LISTA_VALORI: LISTA_VALORI '~' NUMAR .
+
+    $default  reduce using rule 34 (LISTA_VALORI)
+
+
+State 135
+
+   25 INSTRUCTIUNI: INSTRUCTIUNI . INSTRUCTIUNE '.'
+   57 INSTRUCTIUNE_IF: IF '(' CONDITIE_COMPLEXA ')' THEN INSTRUCTIUNI . ENDIF
+   58                | IF '(' CONDITIE_COMPLEXA ')' THEN INSTRUCTIUNI . ELSE INSTRUCTIUNI ENDIF
+
+    FOR            shift, and go to state 46
+    WHILE          shift, and go to state 47
+    IDENTIFICATOR  shift, and go to state 48
+    NUMAR          shift, and go to state 49
+    IF             shift, and go to state 50
+    ELSE           shift, and go to state 141
+    ENDIF          shift, and go to state 142
+    '('            shift, and go to state 51
+
+    INSTRUCTIUNE         go to state 78
+    OPERAND              go to state 54
+    EXPRESII_ARITMETICE  go to state 55
+    EXPRESIE_ARITMETICA  go to state 56
+    INSTRUCTIUNE_IF      go to state 57
+    INSTRUCTIUNE_FOR     go to state 58
+    INSTRUCTIUNE_WHILE   go to state 59
+
+
+State 136
+
+    4 DECLARATIE_FUNCTIE: TIP_DATA IDENTIFICATOR . '(' LISTA_PARAMETRI ')' '{' INSTRUCTIUNI RETURN TIP_DATA '.' '}'
+
+    '('  shift, and go to state 143
+
+
+State 137
+
+    5 DECLARATIE_FUNCTIE: VOID IDENTIFICATOR . '(' LISTA_PARAMETRI ')' '{' INSTRUCTIUNI '}'
+
+    '('  shift, and go to state 144
+
+
+State 138
+
+    1 PROGRAM: START_DECLARATII DECLARATII SFARSIT_DECLARATII START_PROGRAM '{' INSTRUCTIUNI '}' STOP_PROGRAM START_DECLARATII_FUNCTIE DECLARATII_FUNCTIE SFARSIT_DECLARATII_FUNCTIE .
+
+    $default  reduce using rule 1 (PROGRAM)
+
+
+State 139
+
+    3 DECLARATII_FUNCTIE: DECLARATII_FUNCTIE DECLARATIE_FUNCTIE .
+
+    $default  reduce using rule 3 (DECLARATII_FUNCTIE)
+
+
+State 140
+
+   59 INSTRUCTIUNE_FOR: FOR INITIALIZARE UNTIL OPRIRE DO_FOR INSTRUCTIUNI ENDFOR .
+
+    $default  reduce using rule 59 (INSTRUCTIUNE_FOR)
+
+
+State 141
+
+   58 INSTRUCTIUNE_IF: IF '(' CONDITIE_COMPLEXA ')' THEN INSTRUCTIUNI ELSE . INSTRUCTIUNI ENDIF
+
+    FOR            shift, and go to state 46
+    WHILE          shift, and go to state 47
+    IDENTIFICATOR  shift, and go to state 48
+    NUMAR          shift, and go to state 49
+    IF             shift, and go to state 50
+    '('            shift, and go to state 51
+
+    INSTRUCTIUNI         go to state 145
+    INSTRUCTIUNE         go to state 53
+    OPERAND              go to state 54
+    EXPRESII_ARITMETICE  go to state 55
+    EXPRESIE_ARITMETICA  go to state 56
+    INSTRUCTIUNE_IF      go to state 57
+    INSTRUCTIUNE_FOR     go to state 58
+    INSTRUCTIUNE_WHILE   go to state 59
+
+
+State 142
+
+   57 INSTRUCTIUNE_IF: IF '(' CONDITIE_COMPLEXA ')' THEN INSTRUCTIUNI ENDIF .
+
+    $default  reduce using rule 57 (INSTRUCTIUNE_IF)
+
+
+State 143
+
+    4 DECLARATIE_FUNCTIE: TIP_DATA IDENTIFICATOR '(' . LISTA_PARAMETRI ')' '{' INSTRUCTIUNI RETURN TIP_DATA '.' '}'
+
+    TIP_DATA  shift, and go to state 23
+
+    LISTA_PARAMETRI  go to state 146
+    PARAMETRU        go to state 26
+
+
+State 144
+
+    5 DECLARATIE_FUNCTIE: VOID IDENTIFICATOR '(' . LISTA_PARAMETRI ')' '{' INSTRUCTIUNI '}'
+
+    TIP_DATA  shift, and go to state 23
+
+    LISTA_PARAMETRI  go to state 147
+    PARAMETRU        go to state 26
+
+
+State 145
+
+   25 INSTRUCTIUNI: INSTRUCTIUNI . INSTRUCTIUNE '.'
+   58 INSTRUCTIUNE_IF: IF '(' CONDITIE_COMPLEXA ')' THEN INSTRUCTIUNI ELSE INSTRUCTIUNI . ENDIF
+
+    FOR            shift, and go to state 46
+    WHILE          shift, and go to state 47
+    IDENTIFICATOR  shift, and go to state 48
+    NUMAR          shift, and go to state 49
+    IF             shift, and go to state 50
+    ENDIF          shift, and go to state 148
+    '('            shift, and go to state 51
+
+    INSTRUCTIUNE         go to state 78
+    OPERAND              go to state 54
+    EXPRESII_ARITMETICE  go to state 55
+    EXPRESIE_ARITMETICA  go to state 56
+    INSTRUCTIUNE_IF      go to state 57
+    INSTRUCTIUNE_FOR     go to state 58
+    INSTRUCTIUNE_WHILE   go to state 59
+
+
+State 146
+
+    4 DECLARATIE_FUNCTIE: TIP_DATA IDENTIFICATOR '(' LISTA_PARAMETRI . ')' '{' INSTRUCTIUNI RETURN TIP_DATA '.' '}'
+   22 LISTA_PARAMETRI: LISTA_PARAMETRI . '~' PARAMETRU
+
+    ')'  shift, and go to state 149
+    '~'  shift, and go to state 37
+
+
+State 147
+
+    5 DECLARATIE_FUNCTIE: VOID IDENTIFICATOR '(' LISTA_PARAMETRI . ')' '{' INSTRUCTIUNI '}'
+   22 LISTA_PARAMETRI: LISTA_PARAMETRI . '~' PARAMETRU
+
+    ')'  shift, and go to state 150
+    '~'  shift, and go to state 37
+
+
+State 148
+
+   58 INSTRUCTIUNE_IF: IF '(' CONDITIE_COMPLEXA ')' THEN INSTRUCTIUNI ELSE INSTRUCTIUNI ENDIF .
+
+    $default  reduce using rule 58 (INSTRUCTIUNE_IF)
+
+
+State 149
+
+    4 DECLARATIE_FUNCTIE: TIP_DATA IDENTIFICATOR '(' LISTA_PARAMETRI ')' . '{' INSTRUCTIUNI RETURN TIP_DATA '.' '}'
+
+    '{'  shift, and go to state 151
+
+
+State 150
+
+    5 DECLARATIE_FUNCTIE: VOID IDENTIFICATOR '(' LISTA_PARAMETRI ')' . '{' INSTRUCTIUNI '}'
+
+    '{'  shift, and go to state 152
+
+
+State 151
+
+    4 DECLARATIE_FUNCTIE: TIP_DATA IDENTIFICATOR '(' LISTA_PARAMETRI ')' '{' . INSTRUCTIUNI RETURN TIP_DATA '.' '}'
+
+    FOR            shift, and go to state 46
+    WHILE          shift, and go to state 47
+    IDENTIFICATOR  shift, and go to state 48
+    NUMAR          shift, and go to state 49
+    IF             shift, and go to state 50
+    '('            shift, and go to state 51
+
+    INSTRUCTIUNI         go to state 153
+    INSTRUCTIUNE         go to state 53
+    OPERAND              go to state 54
+    EXPRESII_ARITMETICE  go to state 55
+    EXPRESIE_ARITMETICA  go to state 56
+    INSTRUCTIUNE_IF      go to state 57
+    INSTRUCTIUNE_FOR     go to state 58
+    INSTRUCTIUNE_WHILE   go to state 59
+
+
+State 152
+
+    5 DECLARATIE_FUNCTIE: VOID IDENTIFICATOR '(' LISTA_PARAMETRI ')' '{' . INSTRUCTIUNI '}'
+
+    FOR            shift, and go to state 46
+    WHILE          shift, and go to state 47
+    IDENTIFICATOR  shift, and go to state 48
+    NUMAR          shift, and go to state 49
+    IF             shift, and go to state 50
+    '('            shift, and go to state 51
+
+    INSTRUCTIUNI         go to state 154
+    INSTRUCTIUNE         go to state 53
+    OPERAND              go to state 54
+    EXPRESII_ARITMETICE  go to state 55
+    EXPRESIE_ARITMETICA  go to state 56
+    INSTRUCTIUNE_IF      go to state 57
+    INSTRUCTIUNE_FOR     go to state 58
+    INSTRUCTIUNE_WHILE   go to state 59
+
+
+State 153
+
+    4 DECLARATIE_FUNCTIE: TIP_DATA IDENTIFICATOR '(' LISTA_PARAMETRI ')' '{' INSTRUCTIUNI . RETURN TIP_DATA '.' '}'
+   25 INSTRUCTIUNI: INSTRUCTIUNI . INSTRUCTIUNE '.'
+
+    FOR            shift, and go to state 46
+    WHILE          shift, and go to state 47
+    IDENTIFICATOR  shift, and go to state 48
+    NUMAR          shift, and go to state 49
+    IF             shift, and go to state 50
+    RETURN         shift, and go to state 155
+    '('            shift, and go to state 51
+
+    INSTRUCTIUNE         go to state 78
+    OPERAND              go to state 54
+    EXPRESII_ARITMETICE  go to state 55
+    EXPRESIE_ARITMETICA  go to state 56
+    INSTRUCTIUNE_IF      go to state 57
+    INSTRUCTIUNE_FOR     go to state 58
+    INSTRUCTIUNE_WHILE   go to state 59
+
+
+State 154
+
+    5 DECLARATIE_FUNCTIE: VOID IDENTIFICATOR '(' LISTA_PARAMETRI ')' '{' INSTRUCTIUNI . '}'
+   25 INSTRUCTIUNI: INSTRUCTIUNI . INSTRUCTIUNE '.'
+
+    FOR            shift, and go to state 46
+    WHILE          shift, and go to state 47
+    IDENTIFICATOR  shift, and go to state 48
+    NUMAR          shift, and go to state 49
+    IF             shift, and go to state 50
+    '}'            shift, and go to state 156
+    '('            shift, and go to state 51
+
+    INSTRUCTIUNE         go to state 78
+    OPERAND              go to state 54
+    EXPRESII_ARITMETICE  go to state 55
+    EXPRESIE_ARITMETICA  go to state 56
+    INSTRUCTIUNE_IF      go to state 57
+    INSTRUCTIUNE_FOR     go to state 58
+    INSTRUCTIUNE_WHILE   go to state 59
+
+
+State 155
+
+    4 DECLARATIE_FUNCTIE: TIP_DATA IDENTIFICATOR '(' LISTA_PARAMETRI ')' '{' INSTRUCTIUNI RETURN . TIP_DATA '.' '}'
+
+    TIP_DATA  shift, and go to state 157
+
+
+State 156
+
+    5 DECLARATIE_FUNCTIE: VOID IDENTIFICATOR '(' LISTA_PARAMETRI ')' '{' INSTRUCTIUNI '}' .
+
+    $default  reduce using rule 5 (DECLARATIE_FUNCTIE)
+
+
+State 157
+
+    4 DECLARATIE_FUNCTIE: TIP_DATA IDENTIFICATOR '(' LISTA_PARAMETRI ')' '{' INSTRUCTIUNI RETURN TIP_DATA . '.' '}'
+
+    '.'  shift, and go to state 158
+
+
+State 158
+
+    4 DECLARATIE_FUNCTIE: TIP_DATA IDENTIFICATOR '(' LISTA_PARAMETRI ')' '{' INSTRUCTIUNI RETURN TIP_DATA '.' . '}'
+
+    '}'  shift, and go to state 159
+
+
+State 159
+
+    4 DECLARATIE_FUNCTIE: TIP_DATA IDENTIFICATOR '(' LISTA_PARAMETRI ')' '{' INSTRUCTIUNI RETURN TIP_DATA '.' '}' .
+
+    $default  reduce using rule 4 (DECLARATIE_FUNCTIE)
